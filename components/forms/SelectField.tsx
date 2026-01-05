@@ -12,7 +12,10 @@ const SelectField = ({
   name,
   options,
   placeholder,
+  validation,
+  error,
   register,
+  label
 }: selectFieldProps) => {
   return (
     <section className="flex flex-col gap-2">

@@ -42,8 +42,11 @@ declare global {
 
   type selectFieldProps = {
     name: string;
+    label: string;
+    validation?: RegisterOptions;
     options: selectOption[];
     placeholder: string;
+    error: FieldError | undefined;
     register: UseFormRegister;
   };
 

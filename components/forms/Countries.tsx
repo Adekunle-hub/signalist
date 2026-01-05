@@ -18,19 +18,23 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import ReactCountryFlag from "react-country-flag";
-import { getCode, getNames } from "country-list"; 
+import { getCode, getNames } from "country-list";
+
+type comboboxCountries={
+
+onCountryChange?:(countryCode:string)=>void
+}
 
 const countries = getNames().map((name) => ({
   name,
-  code: getCode(name) || "US", 
+  code: getCode(name) || "US",
 }));
 
-export default function ComboboxCountries() {
+export default function ComboboxCountries({onCountryChange}:comboboxCountries) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const [search, setSearch] = React.useState("");
 
-  
   const filteredCountries = countries.filter((c) =>
     c.name.toLowerCase().includes(search.toLowerCase())
   );
@@ -64,7 +68,7 @@ export default function ComboboxCountries() {
         <Command>
           <CommandInput
             placeholder="Search country..."
-            className="h-9 " 
+            className="h-9 "
             value={search}
             onValueChange={(text) => setSearch(text)}
           />

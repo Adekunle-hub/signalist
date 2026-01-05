@@ -5,8 +5,6 @@ import InputField from "@/components/forms/InputField";
 import SelectField from "@/components/forms/SelectField";
 import GoogleSignInButton from "@/components/GoogleSignInButton";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { signUpWithEmail } from "@/lib/actions/auth.actions";
 import {
   INVESTMENT_GOALS,
@@ -22,16 +20,24 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
-
-    formState: { errors },
+    setValue,
+    formState: { errors, isSubmitting },
   } = useForm<signUpForm>();
 
   const onSubmit = async (data: signUpForm) => {
     try {
+      console.log("Form data:", data); // Debug: check what's being submitted
       const result = await signUpWithEmail(data);
-      if (result.success) router.push("/");
+      if (result.success) {
+        toast.success("Account created successfully!");
+        router.push("/");
+      } else {
+        toast.error("Sign up failed", {
+          description: result.error || "Failed to create an account",
+        });
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Sign up error:", error);
       toast.error("Sign up failed", {
         description:
           error instanceof Error
@@ -40,8 +46,9 @@ const SignUp = () => {
       });
     }
   };
+
   return (
-    <main className=" mt-8">
+    <main className="mt-8">
       <h1 className="text-white text-xl font-semibold">
         Sign Up and Personalize
       </h1>
@@ -65,9 +72,15 @@ const SignUp = () => {
             name="email"
             label="Email"
             placeholder="Enter your Email..."
-            type="text"
+            type="email"
             register={register}
-            validation={{ required: "This is required" }}
+            validation={{
+              required: "This is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Invalid email address",
+              },
+            }}
             error={errors.email}
           />
         </div>
@@ -78,52 +91,70 @@ const SignUp = () => {
             placeholder="Enter a strong password"
             type="password"
             register={register}
-            validation={{ required: "This is required" }}
+            validation={{
+              required: "This is required",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters",
+              },
+            }}
             error={errors.password}
           />
         </div>
         <div>
           <SelectField
             placeholder="Growth"
-            name="Investment Goals"
+            name="investmentGoals"
+            label="Investment Goals"
             options={INVESTMENT_GOALS}
             register={register}
+            validation={{ required: "Please select an investment goal" }}
+            error={errors.investmentGoals}
           />
         </div>
         <div>
           <SelectField
             placeholder="Select your risk level"
-            name="Risk Tolerance"
+            name="riskTolerance"
+            label="Risk Tolerance"
             options={RISK_TOLERANCE_OPTIONS}
             register={register}
+            validation={{ required: "Please select your risk tolerance" }}
+            error={errors.riskTolerance}
           />
         </div>
         <div>
-          <ComboboxCountries />
+          <ComboboxCountries
+            onCountryChange={(country) => setValue("country", country)}
+          />
         </div>
-
         <div>
           <SelectField
             placeholder="Select your preferred industry"
-            name="Preferred Industry"
+            name="preferredIndustry"
+            label="Preferred Industry"
             options={PREFERRED_INDUSTRIES}
             register={register}
+            validation={{ required: "Please select a preferred industry" }}
+            error={errors.preferedIndustry}
           />
         </div>
         <Button
           type="submit"
-          className="bg-[#FDD458] cursor-pointer hover:bg-[#FDD458]/90 text-black font-semibold"
+          disabled={isSubmitting}
+          className="bg-[#FDD458] cursor-pointer hover:bg-[#FDD458]/90 text-black font-semibold disabled:opacity-50"
         >
-          Start Your Investing Journey
+          {isSubmitting
+            ? "Creating Account..."
+            : "Start Your Investing Journey"}
         </Button>
       </form>
-
       <FooterLink
         text="Already have an account?"
         action="Log In"
         link="/sign-in"
       />
-      <GoogleSignInButton/>
+      <GoogleSignInButton />
     </main>
   );
 };
