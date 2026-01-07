@@ -47,7 +47,7 @@ export const getAuth = async () => {
     },
 
     advanced: {
-      cookies: process.env.NODE_ENV === "production"
+      cookies: process.env.NODE_ENV==="production"
         ? {
            
             session_token: {
