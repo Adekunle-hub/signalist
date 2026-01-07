@@ -14,6 +14,7 @@ export const signUpWithEmail = async ({
   investmentGoals,
   riskTolerance,
 }: signUpForm) => {
+  console.log("📝 Starting signup for:", email);
   try {
     const response = await auth.api.signUpEmail({
       body: {
@@ -23,7 +24,21 @@ export const signUpWithEmail = async ({
       },
     });
 
+    console.log(
+      "✅ User created in database:",
+      response ? "success" : "failed"
+    );
+
     if (response) {
+      console.log("🎯 Attempting to send Inngest event...");
+      console.log("Event data:", {
+        email,
+        name: fullName,
+        country,
+        investmentGoals,
+        preferedIndustry,
+        riskTolerance,
+      });
       await inngest.send({
         name: "app/user.created",
         data: {
@@ -38,8 +53,10 @@ export const signUpWithEmail = async ({
     }
 
     return { success: true, data: response };
+    
   } catch (e) {
     console.log("sign up failed", e);
+    
     return { success: false, error: "sign up failed" };
   }
 };
@@ -73,7 +90,6 @@ export const signInWithGoogle = async () => {
   const authClient = createAuthClient({
     baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
   });
-  
 
   try {
     const data = await authClient.signIn.social({
