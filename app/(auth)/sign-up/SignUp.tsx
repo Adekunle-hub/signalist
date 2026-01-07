@@ -25,6 +25,7 @@ const SignUp = () => {
   } = useForm<signUpForm>();
 
   const onSubmit = async (data: signUpForm) => {
+    console.log("Form Data Submitted:", data);
     try {
       const result = await signUpWithEmail(data);
       if (result.success) {
