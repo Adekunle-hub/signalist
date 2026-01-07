@@ -25,19 +25,26 @@ const SignUp = () => {
   } = useForm<signUpForm>();
 
   const onSubmit = async (data: signUpForm) => {
-    console.log("Form Data Submitted:", data);
+    console.log("🚀 Form submit triggered");
+    console.log("📝 Form Data Submitted:", data);
+
     try {
+      console.log("📡 Calling signUpWithEmail...");
       const result = await signUpWithEmail(data);
+
+      console.log("✅ Result received:", result);
+
       if (result.success) {
         toast.success("Account created successfully!");
         router.push("/");
       } else {
+        console.error("❌ Sign up failed:", result.error);
         toast.error("Sign up failed", {
           description: result.error || "Failed to create an account",
         });
       }
     } catch (error) {
-      console.error("Sign up error:", error);
+      console.error("💥 Exception caught:", error);
       toast.error("Sign up failed", {
         description:
           error instanceof Error
@@ -47,13 +54,19 @@ const SignUp = () => {
     }
   };
 
+  // Add this to check for validation errors
+  const onError = (errors: any) => {
+    console.error("🔴 Form validation errors:", errors);
+    toast.error("Please fill in all required fields correctly");
+  };
+
   return (
     <main className="mt-8">
       <h1 className="text-white text-xl font-semibold">
         Sign Up and Personalize
       </h1>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit, onError)}
         className="mt-4 flex flex-col gap-y-4"
       >
         <div>
@@ -125,7 +138,10 @@ const SignUp = () => {
         </div>
         <div>
           <ComboboxCountries
-            onCountryChange={(country) => setValue("country", country)}
+            onCountryChange={(country) => {
+              console.log("🌍 Country selected:", country);
+              setValue("country", country);
+            }}
           />
         </div>
         <div>
