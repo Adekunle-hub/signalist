@@ -10,7 +10,7 @@ const GoogleSignInButton = () => {
     try {
       const authClient = createAuthClient({
         baseURL:
-          process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
+          process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
       });
 
       const data = await authClient.signIn.social({
