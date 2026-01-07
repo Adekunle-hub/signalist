@@ -1,4 +1,4 @@
-import { auth } from "@/lib/better-auth/auth";
+import { getAuth } from "@/lib/better-auth/auth";
 
 import { headers } from "next/headers";
 import Image from "next/image";
@@ -7,6 +7,7 @@ import React, { ReactNode } from "react";
 import { FaStar } from "react-icons/fa";
 
 const layout = async ({ children }: { children: ReactNode }) => {
+  const auth = await getAuth();
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (session?.user) redirect("/");

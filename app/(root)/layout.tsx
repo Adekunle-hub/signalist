@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 
 import SearchCommandWrapper from "@/components/SearchCommandWrapper";
-import { auth } from "@/lib/better-auth/auth";
+import { getAuth } from "@/lib/better-auth/auth";
 
 
 import { headers } from "next/headers";
@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
+  const auth = await getAuth();
  
   const session = await auth.api.getSession({
     headers: await headers(),
