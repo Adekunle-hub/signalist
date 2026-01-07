@@ -99,7 +99,7 @@ const SignUp = () => {
         </div>
         <div>
           <InputField
-            name="password"
+            name="Password"
             label="Password"
             placeholder="Enter a strong password"
             type="password"
@@ -117,7 +117,7 @@ const SignUp = () => {
         <div>
           <SelectField
             placeholder="Growth"
-            name="investmentGoals"
+            name="Investment Goals"
             label="Investment Goals"
             options={INVESTMENT_GOALS}
             register={register}
@@ -128,7 +128,7 @@ const SignUp = () => {
         <div>
           <SelectField
             placeholder="Select your risk level"
-            name="riskTolerance"
+            name="Risk Tolerance"
             label="Risk Tolerance"
             options={RISK_TOLERANCE_OPTIONS}
             register={register}
@@ -147,7 +147,7 @@ const SignUp = () => {
         <div>
           <SelectField
             placeholder="Select your preferred industry"
-            name="preferredIndustry"
+            name="Preferred Industry"
             label="Preferred Industry"
             options={PREFERRED_INDUSTRIES}
             register={register}

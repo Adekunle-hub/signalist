@@ -70,15 +70,15 @@ const NavItems = () => {
       </ul>
       {showSearchModal && (
         <div
-          className="fixed left-0 right-0 bottom-0 top-16 z-40
-               flex pt-6  justify-center
+          className="fixed left-0 hidden right-0 bottom-0 top-16 z-40
+               md:flex pt-6  justify-center
                bg-black/40 backdrop-blur-sm"
         >
           <div
-            className="w-full h-fit max-w-lg px-4"
+            className="w-full  h-fit max-w-lg px-4"
             onClick={(e) => e.stopPropagation()}
           >
-            <SearchCommand  />
+            <SearchCommand />
           </div>
         </div>
       )}

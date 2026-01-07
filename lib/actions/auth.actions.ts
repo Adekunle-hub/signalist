@@ -15,16 +15,7 @@ export const signUpWithEmail = async ({
   riskTolerance,
 }: signUpForm) => {
   try {
-    try {
-      console.log("🧪 Testing Inngest...");
-      await inngest.send({
-        name: "test/hello",
-        data: { message: "Test from signup" },
-      });
-      console.log("✅ Test event sent");
-    } catch (e) {
-      console.error("❌ Test event failed:", e);
-    }
+   
     const auth = await getAuth();
     const response = await auth.api.signUpEmail({
       body: {
