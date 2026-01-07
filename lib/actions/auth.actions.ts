@@ -28,7 +28,6 @@ export const signUpWithEmail = async ({
         name: "app/user.created",
         data: {
           email,
-          password,
           name: fullName,
           country,
           investmentGoals,

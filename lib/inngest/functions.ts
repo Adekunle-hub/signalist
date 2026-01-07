@@ -18,7 +18,7 @@ export const sendSignUpEmail = inngest.createFunction(
             - Country: ${event.data.country}
             - Investment goals: ${event.data.investmentGoals}
             - Risk tolerance: ${event.data.riskTolerance}
-            - Preferred industry: ${event.data.preferredIndustry}
+            - Prefered industry: ${event.data.preferredIndustry}
         `;
 
     const prompt = PERSONALIZED_WELCOME_EMAIL_PROMPT.replace(
@@ -50,6 +50,7 @@ export const sendSignUpEmail = inngest.createFunction(
 
       return await sendWelcomeEmail({ email, name, intro: introText });
     });
+    
 
     return {
       success: true,
