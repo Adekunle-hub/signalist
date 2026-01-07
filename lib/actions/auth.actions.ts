@@ -14,15 +14,18 @@ export const signUpWithEmail = async ({
   investmentGoals,
   riskTolerance,
 }: signUpForm) => {
-  console.log("🔥 SERVER ACTION STARTED");
-  console.log("📦 Data received:", { email, fullName, country });
-
   try {
-    console.log("1️⃣ Getting auth instance...");
+    try {
+      console.log("🧪 Testing Inngest...");
+      await inngest.send({
+        name: "test/hello",
+        data: { message: "Test from signup" },
+      });
+      console.log("✅ Test event sent");
+    } catch (e) {
+      console.error("❌ Test event failed:", e);
+    }
     const auth = await getAuth();
-    console.log("✅ Auth instance obtained");
-
-    console.log("2️⃣ Calling signUpEmail API...");
     const response = await auth.api.signUpEmail({
       body: {
         email,
@@ -31,12 +34,6 @@ export const signUpWithEmail = async ({
       },
     });
 
-    console.log("3️⃣ Response received:");
-    console.log("   - Type:", typeof response);
-    console.log("   - Value:", response);
-    console.log("   - Is Response object?", response instanceof Response);
-
-    // Check if it's a Response object
     if (response instanceof Response) {
       console.log("   - Status:", response.status);
       console.log("   - Status Text:", response.statusText);
@@ -45,9 +42,9 @@ export const signUpWithEmail = async ({
       if (!response.ok) {
         const errorText = await response.text();
         console.error("❌ API returned error:", errorText);
-        return { 
-          success: false, 
-          error: `Signup failed: ${errorText || response.statusText}` 
+        return {
+          success: false,
+          error: `Signup failed: ${errorText || response.statusText}`,
         };
       }
 
@@ -103,17 +100,19 @@ export const signUpWithEmail = async ({
 
     console.log("🎉 Returning success");
     return { success: true, data: response };
-
   } catch (e) {
     console.error("❌❌❌ CATCH BLOCK EXECUTED ❌❌❌");
     console.error("Error type:", e?.constructor?.name);
     console.error("Error message:", e instanceof Error ? e.message : String(e));
-    console.error("Error stack:", e instanceof Error ? e.stack : "No stack trace");
+    console.error(
+      "Error stack:",
+      e instanceof Error ? e.stack : "No stack trace"
+    );
     console.error("Full error object:", e);
 
-    return { 
-      success: false, 
-      error: e instanceof Error ? e.message : "sign up failed" 
+    return {
+      success: false,
+      error: e instanceof Error ? e.message : "sign up failed",
     };
   }
 };
