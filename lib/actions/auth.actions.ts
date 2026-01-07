@@ -1,7 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
-import { auth, getAuth } from "../better-auth/auth";
+import { getAuth } from "../better-auth/auth";
 import { inngest } from "../inngest/client";
 import { createAuthClient } from "better-auth/client";
 
@@ -14,7 +14,7 @@ export const signUpWithEmail = async ({
   investmentGoals,
   riskTolerance,
 }: signUpForm) => {
-  console.log("📝 Starting signup for:", email);
+  const auth = await getAuth();
   try {
     const response = await auth.api.signUpEmail({
       body: {
@@ -53,15 +53,15 @@ export const signUpWithEmail = async ({
     }
 
     return { success: true, data: response };
-    
   } catch (e) {
     console.log("sign up failed", e);
-    
+
     return { success: false, error: "sign up failed" };
   }
 };
 
 export const signOut = async () => {
+  const auth = await getAuth();
   try {
     await auth.api.signOut({ headers: await headers() });
   } catch (error) {
@@ -71,6 +71,7 @@ export const signOut = async () => {
 };
 
 export const signInWithEmail = async ({ email, password }: SignInFormData) => {
+  const auth = await getAuth();
   try {
     const response = await auth.api.signInEmail({
       body: {
@@ -87,8 +88,9 @@ export const signInWithEmail = async ({ email, password }: SignInFormData) => {
 };
 
 export const signInWithGoogle = async () => {
+  const auth = await getAuth();
   const authClient = createAuthClient({
-    baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL as string,
   });
 
   try {
